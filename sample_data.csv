@@ -1,0 +1,10 @@
+id,name,email,age,salary
+1,Ana Silva,ana.silva@example.com,28,5300.50
+2,João Souza,joao.souza@example.com,34,7200.00
+3,Maria Lima,maria.lima@example.com,41,9100.75
+4,Carlos Santos,carlos.santos@example.com,25,4300.00
+5,Paula Costa,paula.costa@example.com,30,6500.20
+6,Registro Duplicado,dup@example.com,30,5000.00
+1,Outro Id Repetido,repeat.id@example.com,29,5100.00
+7,Idade Invalida,invalid.age@example.com,abc,4000.00
+8,Salario Invalido,invalid.salary@example.com,33,xyz
