@@ -1,156 +1,90 @@
-# Prova Técnica – Analista de Dados Python
+# CSV Validation & Relational Data Pipeline
 
-## 🎯 Objetivo
+A Python data-processing project that validates CSV records, separates valid and invalid rows, persists clean data in a relational database, and exposes the results through a small API.
 
-Avaliar sua capacidade de:
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=flat-square&logo=python&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-Data_Validation-150458?style=flat-square&logo=pandas&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Tests](https://img.shields.io/badge/Tests-Automated-0A9EDC?style=flat-square&logo=pytest&logoColor=white)
 
-1. Ler e processar um arquivo **CSV** com Python
-2. Validar dados básicos (tipos, campos obrigatórios)
-3. Salvar os dados em um **banco de dados relacional**
-4. (Opcional) Criar uma **API simples** para upload/consulta
-5. (Opcional) Criar **Docker** e **testes automatizados**
+## Project goal
 
-Não existe uma única solução certa. O que mais importa é a **organização**, **clareza** e **boas práticas**.
+The pipeline turns an untrusted CSV file into structured, traceable data. It validates schema and field types, keeps useful error reasons for rejected rows, and stores accepted records in a relational database.
 
----
+## Capabilities
 
-## 🧩 Parte 1 — Leitura e validação do CSV ✅ (OBRIGATÓRIO)
+- Validate expected CSV headers
+- Check integer and numeric fields
+- Reject missing names and email addresses
+- Detect malformed and duplicate records
+- Separate valid rows from validation errors
+- Persist processed data in a relational database
+- Run through Docker
+- Cover core behavior with automated tests
 
-Crie um código em Python que:
+## Processing flow
 
-- leia o arquivo `sample_data.csv`
-- valide cada linha
-- separe:
-  - **registros válidos**
-  - **registros inválidos** (com motivo do erro)
-
-Validações mínimas sugeridas:
-
-- arquivo possui o cabeçalho correto:
-  id,name,email,age,salary
-- `id` deve ser número inteiro
-- `age` deve ser número inteiro
-- `salary` deve ser número (pode ter ponto decimal)
-- `name` e `email` não devem estar vazios
-
-Requisitos:
-
-- usar `pandas`
-
----
-
-## 🧩 Parte 2 — Salvar em banco de dados ✅ (OBRIGATÓRIO)
-
-Crie um código que grave os dados válidos em um **banco de dados relacional**.
-
-Requisitos mínimos:
-
-- pode usar **SQLite** (sugestão, mais simples)
-- criar pelo menos:
-  - uma tabela com os **registros válidos**
-  - opcional: uma tabela para **registros inválidos** com o motivo do erro
-
-Você pode usar:
-
-- biblioteca padrão com `sqlite3`, **ou**
-- ORM como `SQLAlchemy` (diferencial, não obrigatório)
-
----
-
-## 🧩 Parte 3 — Estrutura do projeto ✅ (OBRIGATÓRIO)
-
-Organize seu código em uma estrutura minimamente clara.
-Sugestão (apenas exemplo):
-
-```
-project/
-  ├── main.py          # ponto de entrada
-  ├── csv_utils.py     # funções para ler/validar CSV
-  ├── db_utils.py      # funções para salvar no banco
-  └── README.md        # seu README com instruções
+```text
+CSV input
+   |
+   v
+Schema and row validation
+   |
+   +--> Valid records --> Relational database
+   |
+   +--> Invalid records --> Error reasons
 ```
 
-Você pode usar outra estrutura, desde que seja **organizada e fácil de entender**.
+## Repository structure
 
----
+```text
+.
+├── main.py              # Application entry point
+├── csv_utils.py         # CSV parsing and validation
+├── db_utils.py          # Relational persistence
+├── sample_data.csv      # Reproducible sample input
+├── tests/               # Automated tests
+├── Dockerfile
+├── docker-compose.yml
+└── requirements.txt
+```
 
-## 🌐 Parte 4 — API simples (OPCIONAL, DIFERENCIAL)
+## Run locally
 
-Se quiser, crie uma API REST simples:
+```bash
+git clone https://github.com/JoaoGabriel39359/Prova-Analista-de-Dados.git
+cd Prova-Analista-de-Dados
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python main.py
+```
 
-- POST /upload  → recebe um arquivo CSV e processa
-- GET /records  → lista registros válidos
-- GET /errors   → lista registros inválidos
-- GET /health   → health check
+On Windows, activate the environment with `.venv\\Scripts\\activate`.
 
-Sugestão de frameworks:
+## Run with Docker
 
-- FastAPI
-- Flask
+```bash
+docker compose up --build
+```
 
----
+## Tests
 
-## 🧪 Parte 5 — Testes automatizados (OPCIONAL, DIFERENCIAL)
+```bash
+pytest -q
+```
 
-Se quiser mostrar mais conhecimento, inclua testes com:
+## Engineering focus
 
-- pytest ou unittest
+- Validation rules are separated from persistence.
+- Invalid rows retain actionable rejection reasons.
+- The sample dataset makes the behavior reproducible.
+- Containerization reduces environment differences.
+- Automated tests protect the data-processing contract.
 
-Exemplos do que testar:
+## Author
 
-- leitura de CSV válido
-- tratamento de linha inválida
-- inserção no banco
+**João Gabriel Vieira Barbosa**  
+Full-Stack Developer focused on Python, APIs, data processing, and business automation.
 
----
-
-## 🐳 Parte 6 — Docker (OPCIONAL, DIFERENCIAL)
-
-Diferencial para o perfil júnior:
-
-- criar Dockerfile
-- opcionalmente docker-compose
-
----
-
-## 📂 Arquivo de entrada
-
-Use o arquivo fornecido neste repositório:
-
-- sample_data.csv
-
-Esse arquivo contém:
-
-- linhas válidas
-- linhas com erros propositalmente:
-  - id duplicado
-  - idade inválida (abc)
-  - salário inválido (xyz)
-
-Sua solução deve:
-
-- processar todo o arquivo
-- salvar o que for válido
-- identificar e registrar o que for inválido
-
----
-
-## 📦 Entrega
-
-Você deve entregar:
-
-- link do repositório (GitHub, GitLab, etc.)
-
-Seu repositório deve conter:
-
-- código-fonte
-- este README.md (pode adaptar)
-- o arquivo sample_data.csv
-
-Inclua no README do seu projeto:
-
-- como rodar o projeto
-- bibliotecas necessárias
-- como executar (ex.: python main.py)
-
-Boa prova 🙂
+[GitHub profile](https://github.com/JoaoGabriel39359)
